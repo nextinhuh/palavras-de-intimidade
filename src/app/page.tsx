@@ -1,9 +1,10 @@
 'use client'
 
-import { useState } from 'react'
-import Grid from '@/components/Grid'
+import { useEffect, useState } from 'react'
 import Header from '@/components/Header'
-import WordSearch from '@/components/Grid2'
+import Grid from '@/components/Grid'
+import ModalComplete from '@/components/Modal/ModalComplete'
+import { useDisclosure } from '@nextui-org/react'
 
 interface WordSearchGame {
   puzzle: string[][]
@@ -11,78 +12,68 @@ interface WordSearchGame {
 }
 
 export default function Home() {
-  const [rowsColumns, setRowsColumns] = useState(10) // numero de linhas e colunas
-  const [numberOfWords, setNumberOfWords] = useState(0)
-  const [startGame, setStartGame] = useState(true)
-  const [newList, setNewList] = useState([])
-  const wordsList: string[] = [
-    'ECA',
-    'ISTS',
-    'SAUDE',
-    'CONSENTIMENTO',
-    'PRESERVATIVO',
-    'GENERO',
-    'ADOLESCENTE',
-    'PUBERDADE',
-    'HORMONIOS',
+  const [listOfWords, setListOfWords] = useState([
+    { word: 'ECA', isCompleted: true, wordId: 1 },
+    { word: 'ISTS', isCompleted: false, wordId: 2 },
+    { word: 'SAÚDE', isCompleted: false, wordId: 3 },
+    { word: 'CONSENTIMENTO', isCompleted: true, wordId: 4 },
+    { word: 'PRESERVATIVO', isCompleted: false, wordId: 5 },
+    { word: 'GÊNERO', isCompleted: false, wordId: 6 },
+    { word: 'ADOLESCENTE', isCompleted: false, wordId: 7 },
+    { word: 'PUBERDADE', isCompleted: false, wordId: 8 },
+    { word: 'HORMÔNIOS', isCompleted: false, wordId: 9 },
+  ])
+  const wordsList: any[] = [
+    { word: 'ECA', wordId: 1 },
+    { word: 'ISTS', wordId: 2 },
+    { word: 'SAUDE', wordId: 3 },
+    { word: 'CONSENTIMENTO', wordId: 4 },
+    { word: 'PRESERVATIVO', wordId: 5 },
+    { word: 'GENERO', wordId: 6 },
+    { word: 'ADOLESCENTE', wordId: 7 },
+    { word: 'PUBERDADE', wordId: 8 },
+    { word: 'HORMONIOS', wordId: 9 },
   ]
 
-  const listOfWords = [
-    'ECA',
-    'ISTS',
-    'SAÚDE',
-    'CONSENTIMENTO',
-    'PRESERVATIVO',
-    'GÊNERO',
-    'ADOLESCENTE',
-    'PUBERDADE',
-    'HORMÔNIOS',
-  ]
+  useEffect(() => {
+    // isOpen = true
+  }, [])
 
-  function handleEnterClick() {
-    let count = 0
-
-    // The Fisher-Yates algorith
-    const shuffledWords = [...listOfWords]
-    for (let i = shuffledWords.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1))
-      const temp = shuffledWords[i]
-      shuffledWords[i] = shuffledWords[j]
-      shuffledWords[j] = temp
-    }
-
-    const objectArray: any = []
-    const words = shuffledWords.filter(
-      (word) => word.length < rowsColumns && count++ < numberOfWords,
-    )
-
-    words.forEach((word, index) => {
-      objectArray[index] = { id: index, name: word, completed: false }
-    })
-
-    console.log(objectArray)
-    setNewList(objectArray)
-  }
   return (
     <>
       <Header />
 
+      <ModalComplete />
+
       <div className="w-[100%] p-10 flex-col items-center justify-center">
-        <div className="grid grid-cols-4 gap-2">
-          <div className="col-span-3 flex items-center justify-center border-2 border-cyan-400 rounded-lg">
-            <WordSearch
+        <div className="grid grid-cols-3 gap-2">
+          <div className="col-span-2 flex items-center justify-center">
+            <Grid
+              listWords={listOfWords}
+              setListWords={setListOfWords}
               words={wordsList}
               modes={['horizontal', 'vertical', 'reversed']}
-              size={23}
+              size={15}
             />
           </div>
 
-          <div className="col-span-1 border-2 border-cyan-400 p-4 rounded-lg">
-            <h3 className="text-large mb-4">Lista de palavras</h3>
+          <div className="col-span-1">
+            <div className="flex flex-col">
+              <h3 className="text-2xl mb-4">LISTA DE PALAVRAS</h3>
 
-            {listOfWords.map((word) => {
-              return <p key={word}>{word}</p>
-            })}
+              {listOfWords.map((word) => {
+                return (
+                  <p
+                    className={`font-bold mb-2 p-2 text-left max-w-xs rounded-md ${
+                      word.isCompleted && 'bg-green-400 text-white'
+                    }`}
+                    key={word.word}
+                  >
+                    {word.word}
+                  </p>
+                )
+              })}
+            </div>
           </div>
         </div>
       </div>

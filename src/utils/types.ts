@@ -47,8 +47,15 @@ export const RIGHT_DOWN: Direction = {
   modes: ['diagonal'],
 }
 
-export interface WordSearchProps {
-  words: string[]
+export interface WordProps {
+  word: string
+  wordId: number
+}
+
+export interface GridProps {
+  listWords: any
+  setListWords: (listWords: any) => void
+  words: WordProps[]
   size: number
   modes: Mode[]
   debug?: boolean
@@ -57,7 +64,23 @@ export interface WordSearchProps {
 
 export interface Letter {
   char: string
+  wordId: number
   isWord: boolean
 }
 
 export type Table = Letter[][]
+
+export interface VerifyLetter {
+  isCorrect: boolean
+  isWord: boolean
+  wordId: number
+  char: string
+}
+
+export type TableVerify = VerifyLetter[][]
+
+export interface WordCompletedProps {
+  word: string
+  wordId: number
+  isCompleted?: boolean
+}

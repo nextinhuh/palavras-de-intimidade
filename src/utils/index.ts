@@ -42,3 +42,11 @@ export const shuffleArray = (array: any[]): any[] => {
 
   return array
 }
+
+export function compareStrings(str1: string, str2: string) {
+  if (str1.length === str2.length) {
+    return true
+  }
+
+  return false
+}
