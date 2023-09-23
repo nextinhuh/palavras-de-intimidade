@@ -7,13 +7,8 @@ import {
   Button,
   useDisclosure,
 } from '@nextui-org/react'
-import { useEffect } from 'react'
 
-type ModalCompleteProps = {
-  open?: boolean
-}
-
-export default function ModalComplete({ open }: ModalCompleteProps) {
+export default function ModalComplete() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
 
   return (

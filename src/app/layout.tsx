@@ -2,6 +2,7 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import UIProvider from '@/providers/NextUIProvider'
+import { ListOfWordsProvider } from '@/hooks/listOfWords'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,7 +19,9 @@ export default function RootLayout({
   return (
     <html lang="pt-br" className="">
       <body className={inter.className}>
-        <UIProvider>{children}</UIProvider>
+        <UIProvider>
+          <ListOfWordsProvider>{children}</ListOfWordsProvider>
+        </UIProvider>
       </body>
     </html>
   )

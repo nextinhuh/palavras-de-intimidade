@@ -20,14 +20,10 @@ import {
   WordProps,
   WordCompletedProps,
 } from '../utils/types'
+import { useListOfWords } from '@/hooks/listOfWords'
 
-export default function Grid({
-  words,
-  size,
-  modes,
-  listWords,
-  setListWords,
-}: GridProps) {
+export default function Grid({ words, size, modes }: GridProps) {
+  const { listOfWords, setListOfWords } = useListOfWords()
   const [table, setTable] = useState<Table>([])
   const [wordCompletedList, setWordCompletedList] =
     useState<WordCompletedProps[]>(words)
@@ -48,7 +44,7 @@ export default function Grid({
       direction.modes.every((mode) => modes.includes(mode)),
     )
 
-    const tableCreated: Table = range(0, size - 1).map((y) =>
+    const tableCreated: Table = range(0, 25 - 1).map((y) =>
       range(0, size - 1).map((x) => {
         points.push([x, y])
 
@@ -131,7 +127,7 @@ export default function Grid({
             ) {
               console.log('verdade carai', writedWord, word.word)
 
-              const newListWords = listWords.map((wordComplete: any) => {
+              const newListWords = listOfWords.map((wordComplete: any) => {
                 if (wordComplete.wordId === word.wordId) {
                   wordComplete.isCompleted = true
                   return wordComplete
@@ -139,7 +135,7 @@ export default function Grid({
                 return wordComplete
               })
 
-              setListWords([...newListWords])
+              setListOfWords([...newListWords])
 
               wordCompleted.isCompleted = true
             }
@@ -170,12 +166,12 @@ export default function Grid({
   return (
     <>
       {table.length > 0 ? (
-        <div className="grid grid-cols-20 gap-1">
+        <div className="grid grid-cols-25 gap-1">
           {table.map((row, index) => (
             <div className="" key={index}>
               {row.map((letter, col) => (
                 <p
-                  className={`text-lg text-center cursor-pointer font-bold border-1 mb-2 p-1 ${
+                  className={`text-lg text-center cursor-pointer font-bold border-1 mb-2 p-1 rounded-md hover:bg-slate-300 ${
                     letterSelectedList[index][col].isCorrect
                       ? 'red bg-green-400'
                       : 'black border-black'

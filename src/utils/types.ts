@@ -53,8 +53,6 @@ export interface WordProps {
 }
 
 export interface GridProps {
-  listWords: any
-  setListWords: (listWords: any) => void
   words: WordProps[]
   size: number
   modes: Mode[]

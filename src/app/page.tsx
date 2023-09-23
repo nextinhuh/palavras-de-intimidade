@@ -1,10 +1,18 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import Header from '@/components/Header'
 import Grid from '@/components/Grid'
-import ModalComplete from '@/components/Modal/ModalComplete'
-import { useDisclosure } from '@nextui-org/react'
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  useDisclosure,
+} from '@nextui-org/react'
+import { useListOfWords } from '@/hooks/listOfWords'
 
 interface WordSearchGame {
   puzzle: string[][]
@@ -12,17 +20,11 @@ interface WordSearchGame {
 }
 
 export default function Home() {
-  const [listOfWords, setListOfWords] = useState([
-    { word: 'ECA', isCompleted: true, wordId: 1 },
-    { word: 'ISTS', isCompleted: false, wordId: 2 },
-    { word: 'SAÚDE', isCompleted: false, wordId: 3 },
-    { word: 'CONSENTIMENTO', isCompleted: true, wordId: 4 },
-    { word: 'PRESERVATIVO', isCompleted: false, wordId: 5 },
-    { word: 'GÊNERO', isCompleted: false, wordId: 6 },
-    { word: 'ADOLESCENTE', isCompleted: false, wordId: 7 },
-    { word: 'PUBERDADE', isCompleted: false, wordId: 8 },
-    { word: 'HORMÔNIOS', isCompleted: false, wordId: 9 },
-  ])
+  const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const [modalTitle, setModalTitle] = useState('')
+  const { listOfWords, newCompletedWord, setNewCompletedWord } =
+    useListOfWords()
+
   const wordsList: any[] = [
     { word: 'ECA', wordId: 1 },
     { word: 'ISTS', wordId: 2 },
@@ -36,24 +38,63 @@ export default function Home() {
   ]
 
   useEffect(() => {
-    // isOpen = true
-  }, [])
+    console.log(newCompletedWord)
+
+    if (newCompletedWord !== '') {
+      onOpen()
+      setModalTitle(newCompletedWord)
+      setNewCompletedWord('')
+    }
+  }, [newCompletedWord])
 
   return (
     <>
       <Header />
 
-      <ModalComplete />
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+        <ModalContent>
+          {(onClose) => (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                {modalTitle}
+              </ModalHeader>
+              <ModalBody>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Nullam pulvinar risus non risus hendrerit venenatis.
+                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                </p>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                  Nullam pulvinar risus non risus hendrerit venenatis.
+                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
+                </p>
+                <p>
+                  Magna exercitation reprehenderit magna aute tempor cupidatat
+                  consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
+                  incididunt cillum quis. Velit duis sit officia eiusmod Lorem
+                  aliqua enim laboris do dolor eiusmod. Et mollit incididunt
+                  nisi consectetur esse laborum eiusmod pariatur proident Lorem
+                  eiusmod et. Culpa deserunt nostrud ad veniam.
+                </p>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="primary" onPress={onClose}>
+                  Entendi
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
 
       <div className="w-[100%] p-10 flex-col items-center justify-center">
         <div className="grid grid-cols-3 gap-2">
           <div className="col-span-2 flex items-center justify-center">
             <Grid
-              listWords={listOfWords}
-              setListWords={setListOfWords}
               words={wordsList}
               modes={['horizontal', 'vertical', 'reversed']}
-              size={15}
+              size={10}
             />
           </div>
 
@@ -65,7 +106,8 @@ export default function Home() {
                 return (
                   <p
                     className={`font-bold mb-2 p-2 text-left max-w-xs rounded-md ${
-                      word.isCompleted && 'bg-green-400 text-white'
+                      word.isCompleted &&
+                      'bg-green-400 text-white cursor-pointer'
                     }`}
                     key={word.word}
                   >
