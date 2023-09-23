@@ -78,7 +78,6 @@ export interface VerifyLetter {
 export type TableVerify = VerifyLetter[][]
 
 export interface WordCompletedProps {
-  word: string
   wordId: number
   isCompleted?: boolean
 }

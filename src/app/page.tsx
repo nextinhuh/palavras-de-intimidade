@@ -14,11 +14,6 @@ import {
 } from '@nextui-org/react'
 import { useListOfWords } from '@/hooks/listOfWords'
 
-interface WordSearchGame {
-  puzzle: string[][]
-  words: string[]
-}
-
 export default function Home() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [modalTitle, setModalTitle] = useState('')
@@ -38,8 +33,6 @@ export default function Home() {
   ]
 
   useEffect(() => {
-    console.log(newCompletedWord)
-
     if (newCompletedWord !== '') {
       onOpen()
       setModalTitle(newCompletedWord)
@@ -63,19 +56,6 @@ export default function Home() {
                   Lorem ipsum dolor sit amet, consectetur adipiscing elit.
                   Nullam pulvinar risus non risus hendrerit venenatis.
                   Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
-                <p>
-                  Magna exercitation reprehenderit magna aute tempor cupidatat
-                  consequat elit dolor adipisicing. Mollit dolor eiusmod sunt ex
-                  incididunt cillum quis. Velit duis sit officia eiusmod Lorem
-                  aliqua enim laboris do dolor eiusmod. Et mollit incididunt
-                  nisi consectetur esse laborum eiusmod pariatur proident Lorem
-                  eiusmod et. Culpa deserunt nostrud ad veniam.
                 </p>
               </ModalBody>
               <ModalFooter>

@@ -89,8 +89,8 @@ export default function Grid({ words, size, modes }: GridProps) {
 
     const wordCompletedListCleaned = wordCompletedList.map((word) => {
       return {
-        word: '',
         wordId: word.wordId,
+        isCompleted: false,
       }
     })
 
@@ -125,8 +125,6 @@ export default function Grid({ words, size, modes }: GridProps) {
               compareStrings(writedWord, word.word) &&
               !wordCompleted.isCompleted
             ) {
-              console.log('verdade carai', writedWord, word.word)
-
               const newListWords = listOfWords.map((wordComplete: any) => {
                 if (wordComplete.wordId === word.wordId) {
                   wordComplete.isCompleted = true

@@ -1,5 +1,6 @@
 'use client'
 
+import { WordCompletedProps } from '@/utils/types'
 import {
   createContext,
   useCallback,
@@ -12,10 +13,6 @@ import {
 interface ListOfWordsContextData {
   listOfWords: { word: string; isCompleted: boolean; wordId: number }[]
   setListOfWords: (
-    listOfWords: { word: string; isCompleted: boolean; wordId: number }[],
-  ) => void
-  prevListOfWords: { word: string; isCompleted: boolean; wordId: number }[]
-  setPrevListOfWords: (
     listOfWords: { word: string; isCompleted: boolean; wordId: number }[],
   ) => void
   newCompletedWord: string
@@ -33,9 +30,7 @@ const ListOfWordsContext = createContext<ListOfWordsContextData>(
 export function ListOfWordsProvider({ children }: ListOfWordsProviderProps) {
   const [isFirstRender, setIsFirstRender] = useState<boolean>(true)
   const [newCompletedWord, setNewCompletedWord] = useState<string>('')
-  const [prevListOfWords, setPrevListOfWords] = useState<
-    { word: string; isCompleted: boolean; wordId: number }[]
-  >([
+  const [prevListOfWords, setPrevListOfWords] = useState([
     { word: 'ECA', isCompleted: false, wordId: 1 },
     { word: 'ISTS', isCompleted: false, wordId: 2 },
     { word: 'SAÚDE', isCompleted: false, wordId: 3 },
@@ -59,18 +54,22 @@ export function ListOfWordsProvider({ children }: ListOfWordsProviderProps) {
   ])
 
   useEffect(() => {
-    console.log(prevListOfWords, listOfWords)
-
     if (!isFirstRender) {
-      const test = listOfWords.filter((word) => {
-        return !prevListOfWords?.some((prev) => {
-          return word.isCompleted === prev.isCompleted
+      if (listOfWords !== prevListOfWords) {
+        listOfWords.forEach((word) => {
+          prevListOfWords.forEach((prevWord) => {
+            if (
+              prevWord.wordId === word.wordId &&
+              prevWord.isCompleted !== word.isCompleted
+            ) {
+              prevWord.isCompleted = word.isCompleted
+              setNewCompletedWord(prevWord.word)
+            }
+          })
         })
-      })
 
-      console.log(test)
-      setPrevListOfWords(listOfWords)
-      setNewCompletedWord(test[0].word)
+        setPrevListOfWords([...prevListOfWords])
+      }
     } else {
       setIsFirstRender(false)
     }
@@ -81,8 +80,6 @@ export function ListOfWordsProvider({ children }: ListOfWordsProviderProps) {
       value={{
         listOfWords,
         setListOfWords,
-        prevListOfWords,
-        setPrevListOfWords,
         newCompletedWord,
         setNewCompletedWord,
       }}
