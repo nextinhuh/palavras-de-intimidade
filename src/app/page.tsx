@@ -13,6 +13,7 @@ import {
   useDisclosure,
 } from '@nextui-org/react'
 import { useListOfWords } from '@/hooks/listOfWords'
+import Fireworks from '@/components/Fireworks'
 
 export default function Home() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
