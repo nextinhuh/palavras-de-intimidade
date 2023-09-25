@@ -18,6 +18,7 @@ import Fireworks from '@/components/Fireworks'
 export default function Home() {
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
   const [modalTitle, setModalTitle] = useState('')
+  const [showFireworks, setShowFireworks] = useState(false)
   const { listOfWords, newCompletedWord, setNewCompletedWord } =
     useListOfWords()
 
@@ -33,8 +34,21 @@ export default function Home() {
     { word: 'HORMONIOS', wordId: 9 },
   ]
 
+  useMemo(() => {
+    if (!isOpen) {
+      setShowFireworks(false)
+    }
+  }, [onOpenChange])
+
   useEffect(() => {
     if (newCompletedWord !== '') {
+      const listWordsCompleted = listOfWords.filter((word) => {
+        return word.isCompleted === true
+      })
+
+      if (listOfWords.length === listWordsCompleted.length) {
+        setShowFireworks(true)
+      }
       onOpen()
       setModalTitle(newCompletedWord)
       setNewCompletedWord('')
@@ -45,12 +59,16 @@ export default function Home() {
     <>
       <Header />
 
+      {showFireworks && <Fireworks />}
+
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
-                {modalTitle}
+                {showFireworks
+                  ? 'Parabéns você completou o desafio!!'
+                  : modalTitle}
               </ModalHeader>
               <ModalBody>
                 <p>
