@@ -1,7 +1,8 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { Skeleton } from '@nextui-org/react'
+import HashLoader from 'react-spinners/HashLoader'
+
 import { compareStrings, randomChar, range, shuffleArray } from '../utils'
 import {
   Point,
@@ -191,11 +192,15 @@ export default function Grid({ words, size, modes }: GridProps) {
           ))}
         </div>
       ) : (
-        <div className="max-w-lg w-full bg-red-400 flex items-center gap-3">
-          <div className="w-full flex flex-col gap-2">
-            <Skeleton className="h-3 w-full rounded-lg" />
-            <Skeleton className="h-3 w-full rounded-lg" />
-          </div>
+        <div className="flex items-center justify-center">
+          <HashLoader
+            color={'#380099'}
+            size={120}
+            loading={true}
+            aria-label="Loading Spinner"
+            data-testid="loader"
+            speedMultiplier={1}
+          />
         </div>
       )}
     </>

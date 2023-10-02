@@ -13,11 +13,15 @@ import {
   useDisclosure,
 } from '@nextui-org/react'
 import { useListOfWords } from '@/hooks/listOfWords'
-import Fireworks from '@/components/Fireworks'
+import Confettis from '@/components/Confettis'
 
 export default function Home() {
+  const confettisRef = useRef<any>()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
-  const [modalTitle, setModalTitle] = useState('')
+  const [modalData, setModalData] = useState({
+    word: '',
+    description: '',
+  })
   const [showFireworks, setShowFireworks] = useState(false)
   const { listOfWords, newCompletedWord, setNewCompletedWord } =
     useListOfWords()
@@ -25,13 +29,14 @@ export default function Home() {
   const wordsList: any[] = [
     { word: 'ECA', wordId: 1 },
     { word: 'ISTS', wordId: 2 },
-    { word: 'SAUDE', wordId: 3 },
-    { word: 'CONSENTIMENTO', wordId: 4 },
-    { word: 'PRESERVATIVO', wordId: 5 },
-    { word: 'GENERO', wordId: 6 },
-    { word: 'ADOLESCENTE', wordId: 7 },
-    { word: 'PUBERDADE', wordId: 8 },
-    { word: 'HORMONIOS', wordId: 9 },
+    { word: 'HPV', wordId: 3 },
+    { word: 'SIFILIS', wordId: 4 },
+    { word: 'SEXUALIDADE', wordId: 5 },
+    { word: 'SADUDE', wordId: 6 },
+    { word: 'CONSENTIMENTO', wordId: 7 },
+    { word: 'PRESERVATIVO', wordId: 8 },
+    { word: 'GENERO', wordId: 9 },
+    { word: 'PUBERDADE', wordId: 10 },
   ]
 
   useMemo(() => {
@@ -41,17 +46,21 @@ export default function Home() {
   }, [onOpenChange])
 
   useEffect(() => {
-    if (newCompletedWord !== '') {
+    if (newCompletedWord.word !== '') {
       const listWordsCompleted = listOfWords.filter((word) => {
         return word.isCompleted === true
       })
 
       if (listOfWords.length === listWordsCompleted.length) {
         setShowFireworks(true)
+        confettisRef?.current?.startAnimation()
       }
       onOpen()
-      setModalTitle(newCompletedWord)
-      setNewCompletedWord('')
+      setModalData(newCompletedWord)
+      setNewCompletedWord({
+        word: '',
+        description: '',
+      })
     }
   }, [newCompletedWord])
 
@@ -59,7 +68,7 @@ export default function Home() {
     <>
       <Header />
 
-      {showFireworks && <Fireworks />}
+      <Confettis ref={confettisRef} />
 
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
@@ -68,17 +77,19 @@ export default function Home() {
               <ModalHeader className="flex flex-col gap-1">
                 {showFireworks
                   ? 'Parabéns você completou o desafio!!'
-                  : modalTitle}
+                  : modalData.word}
               </ModalHeader>
               <ModalBody>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                  Nullam pulvinar risus non risus hendrerit venenatis.
-                  Pellentesque sit amet hendrerit risus, sed porttitor quam.
-                </p>
+                <p>{modalData.description}</p>
               </ModalBody>
               <ModalFooter>
-                <Button color="primary" onPress={onClose}>
+                <Button
+                  color="primary"
+                  onPress={() => {
+                    confettisRef?.current?.stopAnimation()
+                    onClose()
+                  }}
+                >
                   Entendi
                 </Button>
               </ModalFooter>
