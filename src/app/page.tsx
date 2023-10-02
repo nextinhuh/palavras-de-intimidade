@@ -32,7 +32,7 @@ export default function Home() {
     { word: 'HPV', wordId: 3 },
     { word: 'SIFILIS', wordId: 4 },
     { word: 'SEXUALIDADE', wordId: 5 },
-    { word: 'SADUDE', wordId: 6 },
+    { word: 'SAUDE', wordId: 6 },
     { word: 'CONSENTIMENTO', wordId: 7 },
     { word: 'PRESERVATIVO', wordId: 8 },
     { word: 'GENERO', wordId: 9 },

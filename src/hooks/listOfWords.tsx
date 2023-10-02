@@ -94,7 +94,7 @@ export function ListOfWordsProvider({ children }: ListOfWordsProviderProps) {
       isCompleted: false,
       wordId: 10,
       description:
-        'É um processo de transformações corporais, fundamental, que acontece na adolescência, para que deixemos de ter formas de criança e passemos a ter formas de adulto (UNICAM, 2023).',
+        'É um processo de transformações corporais, fundamental, que acontece na adolescência, para que deixemos de ter formas de criança e passemos a ter formas de adulto (UNICAMP, 2023).',
     },
   ])
   const [listOfWords, setListOfWords] = useState([
@@ -103,7 +103,7 @@ export function ListOfWordsProvider({ children }: ListOfWordsProviderProps) {
     { word: 'HPV', isCompleted: false, wordId: 3 },
     { word: 'SIFILIS', isCompleted: false, wordId: 4 },
     { word: 'SEXUALIDADE', isCompleted: false, wordId: 5 },
-    { word: 'SADÚDE', isCompleted: false, wordId: 6 },
+    { word: 'SAÚDE', isCompleted: false, wordId: 6 },
     { word: 'CONSENTIMENTO', isCompleted: false, wordId: 7 },
     { word: 'PRESERVATIVO', isCompleted: false, wordId: 8 },
     { word: 'GÊNERO', isCompleted: false, wordId: 9 },
