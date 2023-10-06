@@ -14,10 +14,12 @@ import {
 } from '@nextui-org/react'
 import { useListOfWords } from '@/hooks/listOfWords'
 import Confettis from '@/components/Confettis'
+import { TypeAnimation } from 'react-type-animation'
 
 export default function Home() {
   const confettisRef = useRef<any>()
   const { isOpen, onOpen, onOpenChange } = useDisclosure()
+  const [isReady, setIsReady] = useState(false)
   const [modalData, setModalData] = useState({
     word: '',
     description: '',
@@ -38,6 +40,10 @@ export default function Home() {
     { word: 'GENERO', wordId: 9 },
     { word: 'PUBERDADE', wordId: 10 },
   ]
+
+  function handleIsReady() {
+    setIsReady(!isReady)
+  }
 
   useMemo(() => {
     if (!isOpen) {
@@ -98,37 +104,61 @@ export default function Home() {
         </ModalContent>
       </Modal>
 
-      <div className="w-[100%] p-10 flex-col items-center justify-center">
-        <div className="grid grid-cols-3 gap-2">
-          <div className="col-span-2 flex items-center justify-center">
-            <Grid
-              words={wordsList}
-              modes={['horizontal', 'vertical', 'reversed']}
-              size={10}
-            />
-          </div>
+      {!isReady ? (
+        <div className="w-[100%] min-h-[300px] p-10 flex flex-col items-center justify-center">
+          <TypeAnimation
+            className="flex items-center justify-center text-3xl"
+            sequence={[
+              'Oi tudo bem?!',
+              800,
+              'Preparei uma lista de palavras especial para você!',
+              1500,
+              'Está preparado para esse desafio?',
+              1500,
+            ]}
+            wrapper="div"
+            speed={50}
+            repeat={0}
+            deletionSpeed={60}
+          />
 
-          <div className="col-span-1">
-            <div className="flex flex-col">
-              <h3 className="text-2xl mb-4">LISTA DE PALAVRAS</h3>
+          <Button className="mt-10" onClick={handleIsReady} color="success">
+            Vamos lá!
+          </Button>
+        </div>
+      ) : (
+        <div className="w-[100%] min-h-[300px] p-10 flex-col items-center">
+          <div className="grid grid-cols-3 gap-2">
+            <div className="col-span-2 flex items-center justify-center">
+              <Grid
+                words={wordsList}
+                modes={['horizontal', 'vertical', 'reversed']}
+                size={10}
+              />
+            </div>
 
-              {listOfWords.map((word) => {
-                return (
-                  <p
-                    className={`font-bold mb-2 p-2 text-left max-w-xs rounded-md ${
-                      word.isCompleted &&
-                      'bg-green-400 text-white cursor-pointer'
-                    }`}
-                    key={word.word}
-                  >
-                    {word.word}
-                  </p>
-                )
-              })}
+            <div className="col-span-1">
+              <div className="flex flex-col">
+                <h3 className="text-2xl mb-4">LISTA DE PALAVRAS</h3>
+
+                {listOfWords.map((word) => {
+                  return (
+                    <p
+                      className={`font-bold mb-2 p-2 text-left max-w-xs rounded-md ${
+                        word.isCompleted &&
+                        'bg-green-400 text-white cursor-pointer'
+                      }`}
+                      key={word.word}
+                    >
+                      {word.word}
+                    </p>
+                  )
+                })}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      )}
     </>
   )
 }
