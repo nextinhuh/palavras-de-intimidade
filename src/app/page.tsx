@@ -109,7 +109,7 @@ export default function Home() {
           <TypeAnimation
             className="flex items-center justify-center text-3xl"
             sequence={[
-              'Oi tudo bem?!',
+              'Oi, tudo bem?!',
               800,
               'Preparei uma lista de palavras especial para você!',
               1500,
@@ -119,7 +119,7 @@ export default function Home() {
             wrapper="div"
             speed={50}
             repeat={0}
-            deletionSpeed={60}
+            deletionSpeed={70}
           />
 
           <Button className="mt-10" onClick={handleIsReady} color="success">
